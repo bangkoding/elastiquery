@@ -1,6 +1,6 @@
 {
   "name": "elastiquery",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ORM-style Query Builder for Elasticsearch in TypeScript/JavaScript.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,7 +28,7 @@
   ],
   "homepage": "https://github.com/bangkoding/elastiquery#readme",
   "dependencies": {
-    "@elastic/elasticsearch": "^8.13.0"
+    "@elastic/elasticsearch": "^8.12.0"
   },
   "devDependencies": {
     "typescript": "^5.0.0",

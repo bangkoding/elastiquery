@@ -1,6 +1,7 @@
 import { ElasticClient } from '../client/ElasticClient';
 import { QueryBuilder } from '../query/QueryBuilder';
 import { BaseEntity } from '../entity/BaseEntity';
+import { SearchTotalHits } from '@elastic/elasticsearch/lib/api/types';
 
 export class BaseRepository<T extends BaseEntity> {
   protected index: string;
@@ -98,7 +99,9 @@ export class BaseRepository<T extends BaseEntity> {
       index: this.index,
       ...body,
     });
-    const total = result.hits?.total?.value || 0;
+    const total = typeof result.hits?.total === 'number' 
+      ? result.hits.total 
+      : (result.hits?.total as SearchTotalHits)?.value || 0;
     const data = result.hits?.hits?.map((hit: any) => hit._source) || [];
     return {
       data,
@@ -123,8 +126,8 @@ export class BaseRepository<T extends BaseEntity> {
       index: this.index,
       ...body,
     });
-    if (result.aggregations?.group_by) {
-      return result.aggregations.group_by.buckets;
+    if (result.aggregations?.group_by && 'buckets' in result.aggregations.group_by) {
+      return (result.aggregations.group_by as { buckets: any[] }).buckets;
     }
     return result.aggregations;
   }
