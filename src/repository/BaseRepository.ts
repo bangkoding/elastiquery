@@ -24,7 +24,7 @@ export class BaseRepository<T extends BaseEntity> {
   }
 
   async createMany(docs: T[]) {
-    const body = docs.flatMap(doc => [{ index: { _index: this.index, id: doc.id } }, doc.toDocument ? doc.toDocument() : doc]);
+    const body = docs.flatMap(doc => [{ index: { _index: this.index, _id: doc.id } }, doc.toDocument ? doc.toDocument() : doc]);
     return this.client.bulk({ refresh: true, body });
   }
 

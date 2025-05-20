@@ -1,6 +1,6 @@
 {
   "name": "elastiquery",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ORM-style Query Builder for Elasticsearch in TypeScript/JavaScript.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
