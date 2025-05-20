@@ -17,13 +17,14 @@ export class BaseRepository<T extends BaseEntity> {
     const result = await this.client.index({
       index: this.index,
       document: body,
+      ...(doc.id && { id: doc.id }),
     });
     if (doc.afterCreate) await doc.afterCreate();
     return result;
   }
 
   async createMany(docs: T[]) {
-    const body = docs.flatMap(doc => [{ index: { _index: this.index } }, doc.toDocument ? doc.toDocument() : doc]);
+    const body = docs.flatMap(doc => [{ index: { _index: this.index, id: doc.id } }, doc.toDocument ? doc.toDocument() : doc]);
     return this.client.bulk({ refresh: true, body });
   }
 

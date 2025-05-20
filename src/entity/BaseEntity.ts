@@ -2,6 +2,7 @@ export abstract class BaseEntity {
   static index: string;
   static mapping?: object;
   static settings?: object;
+  id?: string;
 
   // Optionally override to provide custom serialization
   toDocument?(): object;
