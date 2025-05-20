@@ -1,0 +1,37 @@
+{
+  "name": "elastiquery",
+  "version": "1.0.0",
+  "description": "ORM-style Query Builder for Elasticsearch in TypeScript/JavaScript.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bangkoding/elastiquery.git"
+  },
+  "author": "bangkoding <handc0de8@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "elasticsearch",
+    "orm",
+    "query-builder",
+    "typescript",
+    "odm",
+    "repository",
+    "aggregation",
+    "pagination",
+    "elastiquery",
+    "elasticsearch-orm"
+  ],
+  "homepage": "https://github.com/bangkoding/elastiquery#readme",
+  "dependencies": {
+    "@elastic/elasticsearch": "^8.13.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "ts-node": "^10.0.0"
+  }
+} 
