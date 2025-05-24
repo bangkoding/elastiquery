@@ -7,6 +7,69 @@ describe("QueryBuilder", () => {
     builder = new QueryBuilder();
   });
 
+  describe("debug methods", () => {
+    let builder: QueryBuilder;
+    let consoleSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      builder = new QueryBuilder();
+      consoleSpy = jest.spyOn(console, "log").mockImplementation();
+    });
+
+    afterEach(() => {
+      consoleSpy.mockRestore();
+    });
+
+    describe("toJSON", () => {
+      it("should return non-pretty JSON string by default", () => {
+        builder.where("age", ">", 25);
+        const rawQuery = builder.toJSON();
+        expect(rawQuery).toBe(JSON.stringify(builder.build()));
+        expect(rawQuery).not.toContain("\n");
+      });
+
+      it("should return pretty JSON string when pretty=true", () => {
+        builder.where("age", ">", 25);
+        const rawQuery = builder.toJSON(true);
+        expect(rawQuery).toBe(JSON.stringify(builder.build(), null, 2));
+        expect(rawQuery).toContain("\n");
+      });
+    });
+
+    describe("debug", () => {
+      it("should log the query in pretty format", () => {
+        builder.where("age", ">", 25).debug();
+        expect(consoleSpy).toHaveBeenCalledTimes(2);
+        expect(consoleSpy).toHaveBeenNthCalledWith(1, "Elasticsearch Query:");
+        expect(consoleSpy.mock.calls[1][0]).toBe(builder.toJSON(true));
+      });
+
+      it("should return this for method chaining", () => {
+        const result = builder.debug();
+        expect(result).toBe(builder);
+      });
+
+      it("should not affect the final query", () => {
+        const query = builder
+          .where("age", ">", 25)
+          .debug()
+          .andWhere("status", "=", "active")
+          .build();
+
+        expect(query).toEqual({
+          query: {
+            bool: {
+              must: [
+                { range: { age: { gt: 25 } } },
+                { term: { status: "active" } },
+              ],
+            },
+          },
+        });
+      });
+    });
+  });
+
   describe("where conditions", () => {
     it("should build a simple where clause", () => {
       const query = builder.where("age", "=", 25).build();
